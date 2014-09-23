@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
@@ -43,15 +42,12 @@ public class Main {
             e.printStackTrace();
         }
 
-        int[][][] score = multiAlignmentExact.fillTableAffine(seq1,seq2,seq3,matrix,gap);
+        int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
         System.out.println(score[seq1.length()][seq2.length()][seq3.length()]);
         Exact3BackTrack backTrack = new Exact3BackTrack();
-        backTrack.backTrack(seq1,seq2,seq3,score,matrix,"","","",gap,false);
-        System.out.println(backTrack.getSequenses1().get(0));
-        System.out.println();
-        System.out.println(backTrack.getSequenses2().get(0));
-        System.out.println();
-        System.out.println(backTrack.getSequenses3().get(0));
+        backTrack.backTrack(seq1,seq2,seq3,score,matrix,"","","",gap,true);
+        System.out.println(backTrack.getSequenses1().size());
+
 
     }
 }

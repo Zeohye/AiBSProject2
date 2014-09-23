@@ -4,7 +4,7 @@ import java.util.Map;
  * Created by Nils Henning on 20-09-2014.
  */
 public class multiAlignmentExact {
-    public static int[][][] fillTableAffine(String seq1, String seq2,String seq3, Map<String, Integer> matrix, int g) {
+    public static int[][][] fillTable(String seq1, String seq2, String seq3, Map<String, Integer> matrix, int g) {
         int[][][] scoreTable = new int[seq1.length()+1][seq2.length()+1][seq3.length()+1];
         scoreTable[0][0][0]=0;
 
