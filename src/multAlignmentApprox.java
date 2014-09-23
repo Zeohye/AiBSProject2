@@ -28,7 +28,7 @@ public class multAlignmentApprox {
             table = linearAlignment.fillTableLinear(multAlignment[0],sequences[i],matrix,gap);
             backTrack.resetSequenses();
             backTrack.backTrack(multAlignment[0], sequences[i], table, matrix, "", "", false, gap);
-            multAlignment = extend.extend(backTrack.getSequenses1().get(0), backTrack.getSequenses2().get(0), multAlignment);
+            multAlignment = extend.extend(multAlignment[0],backTrack.getSequenses1().get(0), backTrack.getSequenses2().get(0), multAlignment);
         }
         return multAlignment;
     }

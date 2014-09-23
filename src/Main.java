@@ -42,12 +42,18 @@ public class Main {
             e.printStackTrace();
         }
 
-        int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
+        /*int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
         System.out.println(score[seq1.length()][seq2.length()][seq3.length()]);
         Exact3BackTrack backTrack = new Exact3BackTrack();
-        backTrack.backTrack(seq1,seq2,seq3,score,matrix,"","","",gap,true);
-        System.out.println(backTrack.getSequenses1().size());
-
+        backTrack.backTrack(seq1,seq2,seq3,score,matrix,"","","",gap,false);
+        System.out.println(backTrack.getSequenses1().size());*/
+        String[] input = {seq1,seq2,seq3};
+        input = multAlignmentApprox.findApprox(input,matrix,gap,new naiveExtend());
+        System.out.println(input[0]);
+        System.out.println();
+        System.out.println(input[1]);
+        System.out.println();
+        System.out.println(input[2]);
 
     }
 }
