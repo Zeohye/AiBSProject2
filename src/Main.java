@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,17 +24,17 @@ public class Main {
         String seq3 = args[3];
         Map matrix = null;
         try {
-            seq1 = FASTAParser.Parse("input/"+seq1+".fasta");
+            seq1 = FASTAParser.Parse("input/"+seq1+".fasta").get(0);
         } catch (IOException e) {
             seq1 = "";
         }
         try {
-            seq2 = FASTAParser.Parse("input/"+seq2+".fasta");
+            seq2 = FASTAParser.Parse("input/"+seq2+".fasta").get(0);
         } catch (IOException e) {
             seq2="";
         }
         try {
-            seq3 = FASTAParser.Parse("input/"+seq3+".fasta");
+            seq3 = FASTAParser.Parse("input/"+seq3+".fasta").get(0);
         } catch (IOException e) {
             seq3="";
         }
@@ -42,18 +44,45 @@ public class Main {
             e.printStackTrace();
         }
 
-        /*int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
+        System.out.println("Beginning exact alignment. Score:");
+        int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
         System.out.println(score[seq1.length()][seq2.length()][seq3.length()]);
         Exact3BackTrack backTrack = new Exact3BackTrack();
         backTrack.backTrack(seq1,seq2,seq3,score,matrix,"","","",gap,false);
-        System.out.println(backTrack.getSequenses1().size());*/
-        String[] input = {seq1,seq2,seq3};
-        input = multAlignmentApprox.findApprox(input,matrix,gap,new naiveExtend());
-        System.out.println(input[0]);
-        System.out.println();
-        System.out.println(input[1]);
-        System.out.println();
-        System.out.println(input[2]);
+        List<String> resultAlignment = new ArrayList<String>();
+        resultAlignment.add(backTrack.getSequenses1().get(0));
+        resultAlignment.add(backTrack.getSequenses2().get(0));
+        resultAlignment.add(backTrack.getSequenses3().get(0));
+
+        int alignmentScore = Util.computeScoreMulti(resultAlignment, 5, matrix);
+        System.out.println("Score of exact alignment: " + alignmentScore);
+
+        List<String> sequences = new ArrayList<String>();
+        sequences.add(seq1);
+        sequences.add(seq2);
+        sequences.add(seq3);
+
+//        List<String> sequences = new ArrayList<String>();
+//        sequences.add("AAGGCCTT");
+//        sequences.add("GGCCTTAA");
+//        sequences.add("TTAAGGCC");
+//        sequences.add("TTAACCCC");
+//        sequences.add("TTGAGGAC");
+//        sequences.add("TAAAGGCT");
+
+
+
+//        MultipleAlignmentApprox alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new NaiveExtend());
+//        alignment.print();
+
+//        String[] input = {seq1,seq2,seq3};
+//        String[] input = {"AAGGCCTT","GGCCTTAA","TTAAGGCC"};
+//        input = multAlignmentApprox.findApprox(input,matrix,gap,new weirdExtend());
+//        System.out.println(input[0]);
+//        System.out.println();
+//        System.out.println(input[1]);
+//        System.out.println();
+//        System.out.println(input[2]);
 
     }
 }

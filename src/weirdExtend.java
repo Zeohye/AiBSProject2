@@ -3,7 +3,7 @@ import java.util.ArrayList;
 /**
  * Created by Nils Henning on 23-09-2014.
  */
-public class naiveExtend implements Extend {
+public class weirdExtend implements Extend {
     @Override
     public String[] extend(String basePreAlign, String basePostAlign, String extend, String[] table) {
         ArrayList<Integer> inserts = new ArrayList<Integer>();

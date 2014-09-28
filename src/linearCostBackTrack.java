@@ -40,16 +40,18 @@ public class linearCostBackTrack {
             }
             return;
         }
+
         //reached an empty string or 2.
         //add rest of sequence 1
-        if(!seq1.equals("")) {
+        if(seq1.equals("")) {
             for (int n = 0; n < seq2.length(); n++) {
+
                 result1 = "-" + result1;
                 result2 = seq2.charAt(seq2.length() - n -1) + result2;
             }
         }
         //add rest of sequence 2
-        if(!seq2.equals("")) {
+        if(seq2.equals("")) {
             for (int n = 0; n < seq1.length(); n++) {
                 result2 = "-" + result2;
                 result1 = seq1.charAt(seq1.length() - n - 1) + result1;
