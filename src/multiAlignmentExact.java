@@ -17,16 +17,16 @@ public class multiAlignmentExact {
         }
         score2 = linearAlignment.fillTableLinear(seq1,seq3,matrix,g);
         for(int i =0; i<=seq1.length();i++){
-            for(int k = 0;k<=seq3.length();k++){
+            for(int j = 0;j<=seq3.length();j++){
 
-                scoreTable[i][0][k]= score2[i][0]+(i+k)*g;
+                scoreTable[i][0][j]= score2[i][j]+(i+j)*g;
             }
         }
         score2 = linearAlignment.fillTableLinear(seq2,seq3,matrix,g);
-        for(int k =0; k<=seq3.length();k++){
+        for(int i =0; i<=seq3.length();i++){
             for(int j = 0;j<=seq2.length();j++){
 
-                scoreTable[0][j][k]= score2[0][j]+(k+j)*g;
+                scoreTable[0][i][j]= score2[i][j]+(i+j)*g;
             }
         }
 

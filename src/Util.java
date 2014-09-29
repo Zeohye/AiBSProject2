@@ -15,26 +15,37 @@ public class Util {
     }
 
     public static int computeScoreMulti(List<String> alignment, int gap, Map<String, Integer> costMatrix){
+        //start by making basic check on lengths of the strings
+        //should probably throw an exception instead
         int length = alignment.get(0).length();
         for(String s : alignment){
-            System.out.println(s);
             if(s.length() != length){
                 System.out.println("Not all sequences are same length. Invalid Alignment");
                 return 0;
             }
         }
+
+        //count is for debugging
         int count = 0;
         int score = 0;
         String pair = "";
         System.out.println("length: " + length);
+
+        //for every index, compute every combination of alignment scores
         for(int i = 0; i < length; i++){
+
             for(int j = 0; j < alignment.size(); j++){
                 char jChar = alignment.get(j).charAt(i);
+
                 for(int k = j+1; k < alignment.size(); k++){
                     count++;
                     char kChar = alignment.get(k).charAt(i);
+
+                    //check if there is a gap, but not "--"
                     if(jChar =='-' || kChar == '-'){
-                        score+= gap;
+                        if(jChar != kChar) {
+                            score += gap;
+                        }
                     }else {
                         pair = "" + jChar + kChar;
                         score += costMatrix.get(pair);
