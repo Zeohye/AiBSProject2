@@ -44,24 +44,24 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.println("Beginning exact alignment. Score:");
-        int[][][] score = multiAlignmentExact.fillTable("AAGGCCTT", "GGCCTTAA", "TTAAGGCC", matrix, gap);
+//        System.out.println("Beginning exact alignment. Score:");
+//        int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
+////        System.out.println(score[seq1.length()][seq2.length()][seq3.length()]);
 //        System.out.println(score[seq1.length()][seq2.length()][seq3.length()]);
-        System.out.println(score[8][8][8]);
-        System.out.println();
-
-        MultipleAlignmentExact3 myExact = new MultipleAlignmentExact3("AAGGCCTT", "GGCCTTAA", "TTAAGGCC", matrix, gap);
-        myExact.print();
-        myExact.backTrack(false);
-        myExact.print();
+//        System.out.println();
+//
+//        MultipleAlignmentExact3 myExact = new MultipleAlignmentExact3(seq1, seq2, seq3, matrix, gap);
+//        myExact.print();
+//        myExact.backTrack(false);
+//        myExact.print();
 
 //        Exact3BackTrack backTrack = new Exact3BackTrack();
 //        backTrack.backTrack("AAGGCCTT","GGCCTTAA","TTAAGGCC",score,matrix,"","","",gap,false);
 
 
 
-        int alignmentScore = Util.computeScoreMulti(myExact.getAlignment(), 5, matrix);
-        System.out.println("Score of exact alignment: " + alignmentScore);
+//        int alignmentScore = Util.computeScoreMulti(myExact.getAlignment(), 5, matrix);
+//        System.out.println("Score of exact alignment: " + alignmentScore);
 
 //        List<String> sequences = new ArrayList<String>();
 //        sequences.add(seq1);
@@ -69,26 +69,107 @@ public class Main {
 //        sequences.add(seq3);
 
         List<String> sequences = new ArrayList<String>();
-        sequences.add("AAGGCCTT");
-        sequences.add("GGCCTTAA");
-        sequences.add("TTAAGGCC");
-        sequences.add("TTAACCCC");
-        sequences.add("TTGAGGAC");
-        sequences.add("TAAAGGCT");
+//        sequences.add("AAGGCCTT");
+//        sequences.add("GGCCTTAA");
+//        sequences.add("TTAAGGCC");
+//        sequences.add("TTAACCCC");
+//        sequences.add("TTGAGGAC");
+//        sequences.add("TAAAGGCT");
+        sequences.add(seq1);
+        sequences.add(seq2);
+        sequences.add(seq3);
 
 
 
-//        MultipleAlignmentApprox alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new NaiveExtend());
+//        MultipleAlignmentApprox alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new SimpleExtend());
 //        alignment.print();
+//        System.out.println(Util.computeScoreMulti(alignment.getAlignment(), gap, matrix));
 
-//        String[] input = {seq1,seq2,seq3};
-//        String[] input = {"AAGGCCTT","GGCCTTAA","TTAAGGCC"};
-//        input = multAlignmentApprox.findApprox(input,matrix,gap,new weirdExtend());
-//        System.out.println(input[0]);
-//        System.out.println();
-//        System.out.println(input[1]);
-//        System.out.println();
-//        System.out.println(input[2]);
+
+        try {
+            sequences = FASTAParser.Parse("input/brca1-testseqs.fasta");
+            sequences.remove(7);
+            sequences.remove(6);
+            sequences.remove(5);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        String[] combination = new String[24];
+//        int[] scores = new int[24];
+//
+//        int count = 0;
+//
+//        ArrayList<String> orderedSequences;
+//        for(int a = 1; a <= 4; a++){
+//            for(int b = 1; b <= 4; b++){
+//                if(b == a){
+//                    continue;
+//                }
+//                for(int c = 1; c <= 4; c++){
+//                    if(c == a || c == b){
+//                        continue;
+//                    }
+//                    for(int d = 1; d <= 4; d++){
+//                        if(d == a || d == b || d == c){
+//                            continue;
+//                        }
+//
+//                        orderedSequences = new ArrayList<String>();
+//                        orderedSequences.add(sequences.get(0));
+//                        orderedSequences.add(sequences.get(a));
+//                        orderedSequences.add(sequences.get(b));
+//                        orderedSequences.add(sequences.get(c));
+//                        orderedSequences.add(sequences.get(d));
+//
+//                        alignment = new MultipleAlignmentApprox(orderedSequences, matrix, 5, new SimpleExtend());
+//
+//                        scores[count] = Util.computeScoreMulti(alignment.getAlignment(), gap, matrix);
+//                        combination[count] = "" + a+"," + b+","+c+","+d;
+//                        count++;
+//
+//
+//
+//                    }
+//                }
+//            }
+//        }
+//        System.out.println("results of 24 orders:");
+//        for(int i = 0; i < 24; i++){
+//            System.out.println(combination[i] + ": " + scores[i]);
+//        }
+
+
+//        alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new SimpleExtend());
+//        alignment.print();
+//        System.out.println(Util.computeScoreMulti(alignment.getAlignment(), gap, matrix));
+
+        int[] exactScores = new int[20];
+        int[] approxScores = new int[20];
+
+
+        for(int i = 0; i < 20; i++){
+            try {
+                sequences = FASTAParser.Parse("input/testseqs_"+(i+1)*10+"_3.fasta");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MultipleAlignmentExact3 myExact = new MultipleAlignmentExact3(sequences.get(0), sequences.get(1), sequences.get(2), matrix, gap);
+            myExact.backTrack(false);
+            exactScores[i] = Util.computeScoreMulti(myExact.getAlignment(), gap, matrix);
+
+            MultipleAlignmentApprox myApprox = new MultipleAlignmentApprox(sequences, matrix, gap, new SimpleExtend());
+            approxScores[i] = Util.computeScoreMulti(myApprox.getAlignment(), gap, matrix);
+        }
+
+        System.out.println("scores of 20 fastas:");
+
+        for(int i = 0; i < 20; i++){
+            System.out.println(exactScores[i] + ", " + approxScores[i]);
+        }
+
 
     }
 }

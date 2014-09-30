@@ -29,7 +29,7 @@ public class Util {
         int count = 0;
         int score = 0;
         String pair = "";
-        System.out.println("length: " + length);
+//        System.out.println("length: " + length);
 
         //for every index, compute every combination of alignment scores
         for(int i = 0; i < length; i++){
@@ -53,7 +53,7 @@ public class Util {
                 }
             }
         }
-        System.out.println("count: " + count);
+//        System.out.println("count: " + count);
 
         return score;
     }

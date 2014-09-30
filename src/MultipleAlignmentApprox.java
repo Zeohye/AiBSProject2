@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Simon on 27-09-2014.
  */
-public class MultipleAlignmentApprox {
+public class MultipleAlignmentApprox implements MultipleAllignment{
 
     private List<String> alignment;
 
@@ -31,10 +31,6 @@ public class MultipleAlignmentApprox {
             }else if(i > bestSequence){
                 extendStrat.extend(alignment, single.getSeq1(), single.getSeq2());
             }
-            if(single != null) {
-                single.print();
-            }
-            print();
         }
 
     }
@@ -66,11 +62,16 @@ public class MultipleAlignmentApprox {
     }
 
     public void print(){
-        System.out.println("Shitty alignment best sequence: " + bestSequence);
+        System.out.println("Approximate alignment best sequence: " + bestSequence);
         for(String s : alignment){
             System.out.println(s);
         }
         System.out.println();
 
+    }
+
+    @Override
+    public List<String> getAlignment() {
+        return alignment;
     }
 }
