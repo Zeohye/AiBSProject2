@@ -10,39 +10,83 @@ public class Main {
 
     public static void main(String[] args){
 
-        //run experiments
-        if(args[0].equals("experiment")){
-            int a = Integer.parseInt(args[1]);
-            int b = Integer.parseInt(args[2]);
+                if(args[0].equals("exact")){
+                    Map matrix = null;
+                    List<String> sequences = null;
+                    int gap = 0;
+                    boolean full = false;
+                    try {
+                        sequences = FASTAParser.Parse("input/" + args[1]);
+                        matrix = matrixParser.Parse("input/scoreMatrix.txt");
+                        gap = Integer.parseInt(args[2]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    System.out.println("parsed input. Running alignment...");
+                    MultipleAlignmentExact3 alignment = new MultipleAlignmentExact3(sequences.get(0), sequences.get(1), sequences.get(2), matrix, gap);
+                    alignment.backTrack(false);
+                    alignment.print();
+
+
+                    //experiment(a,b);
+                    return;
+        }
+
+        if(args[0].equals("approx")){
+            Map matrix = null;
+            List<String> sequences = null;
+            int gap = 0;
+            boolean full = false;
+            try {
+                sequences = FASTAParser.Parse("input/" + args[1]);
+                matrix = matrixParser.Parse("input/scoreMatrix.txt");
+                gap = Integer.parseInt(args[2]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            MultipleAlignmentApprox alignment = new MultipleAlignmentApprox(sequences, matrix, gap, new SimpleExtend());
+            alignment.print();
+            System.out.println("Score: " + Util.computeScoreMulti(alignment.getAlignment(), gap, matrix));
+
             //experiment(a,b);
             return;
         }
 
-        int gap = Integer.parseInt(args[0]);
-        String seq1 = args[1];
-        String seq2 = args[2];
-        String seq3 = args[3];
-        Map matrix = null;
-        try {
-            seq1 = FASTAParser.Parse("input/"+seq1+".fasta").get(0);
-        } catch (IOException e) {
-            seq1 = "";
-        }
-        try {
-            seq2 = FASTAParser.Parse("input/"+seq2+".fasta").get(0);
-        } catch (IOException e) {
-            seq2="";
-        }
-        try {
-            seq3 = FASTAParser.Parse("input/"+seq3+".fasta").get(0);
-        } catch (IOException e) {
-            seq3="";
-        }
-        try {
-            matrix = matrixParser.Parse("input/scoreMatrix.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //run experiments
+//        if(args[0].equals("experiment")){
+//            int a = Integer.parseInt(args[1]);
+//            int b = Integer.parseInt(args[2]);
+//            //experiment(a,b);
+//            return;
+//        }
+
+//        int gap = Integer.parseInt(args[0]);
+//        String seq1 = args[1];
+//        String seq2 = args[2];
+//        String seq3 = args[3];
+
+//        try {
+//            seq1 = FASTAParser.Parse("input/"+seq1+".fasta").get(0);
+//        } catch (IOException e) {
+//            seq1 = "";
+//        }
+//        try {
+//            seq2 = FASTAParser.Parse("input/"+seq2+".fasta").get(0);
+//        } catch (IOException e) {
+//            seq2="";
+//        }
+//        try {
+//            seq3 = FASTAParser.Parse("input/"+seq3+".fasta").get(0);
+//        } catch (IOException e) {
+//            seq3="";
+//        }
+//        try {
+//            matrix = matrixParser.Parse("input/scoreMatrix.txt");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 //        System.out.println("Beginning exact alignment. Score:");
 //        int[][][] score = multiAlignmentExact.fillTable(seq1, seq2, seq3, matrix, gap);
@@ -67,35 +111,43 @@ public class Main {
 //        sequences.add(seq1);
 //        sequences.add(seq2);
 //        sequences.add(seq3);
-
-        List<String> sequences = new ArrayList<String>();
+//
+//        List<String> sequences = new ArrayList<String>();
 //        sequences.add("AAGGCCTT");
 //        sequences.add("GGCCTTAA");
 //        sequences.add("TTAAGGCC");
 //        sequences.add("TTAACCCC");
 //        sequences.add("TTGAGGAC");
 //        sequences.add("TAAAGGCT");
-        sequences.add(seq1);
-        sequences.add(seq2);
-        sequences.add(seq3);
-
-
-
-//        MultipleAlignmentApprox alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new SimpleExtend());
+//        sequences.add(seq1);s
+//
+////
+//        MultipleAlignmentApprox alignment;
+//        alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new SimpleExtend());
 //        alignment.print();
 //        System.out.println(Util.computeScoreMulti(alignment.getAlignment(), gap, matrix));
+//
+//
+//        try {
+//            sequences = FASTAParser.Parse("input/brca1-testseqs.fasta");
+//            sequences.remove(7);
+//            sequences.remove(6);
+//            sequences.remove(5);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
+//                sequences.add("AAGGCCTT");
+//        sequences.add("GGCCTTAA");
+//        sequences.add("TTAAGGCC");
+//        sequences.add("TTAACCCC");
+//        sequences.add("TTGAGGAC");
+//        sequences.add("TAAAGGCT");
 
-        try {
-            sequences = FASTAParser.Parse("input/brca1-testseqs.fasta");
-            sequences.remove(7);
-            sequences.remove(6);
-            sequences.remove(5);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+//        alignment = new MultipleAlignmentApprox(sequences, matrix, 5, new SimpleExtend());
+//        alignment.print();
+////
 //        String[] combination = new String[24];
 //        int[] scores = new int[24];
 //
@@ -124,6 +176,7 @@ public class Main {
 //                        orderedSequences.add(sequences.get(d));
 //
 //                        alignment = new MultipleAlignmentApprox(orderedSequences, matrix, 5, new SimpleExtend());
+//                        alignment.print();
 //
 //                        scores[count] = Util.computeScoreMulti(alignment.getAlignment(), gap, matrix);
 //                        combination[count] = "" + a+"," + b+","+c+","+d;
@@ -145,30 +198,52 @@ public class Main {
 //        alignment.print();
 //        System.out.println(Util.computeScoreMulti(alignment.getAlignment(), gap, matrix));
 
-        int[] exactScores = new int[20];
-        int[] approxScores = new int[20];
+//        int[] exactScores = new int[20];
+//        int[] approxScores = new int[20];
+//
+//
+//        for(int i = 0; i < 20; i++){
+//            System.out.println(i);
+//            try {
+//                sequences = FASTAParser.Parse("input/testseqs_"+(i+1)*10+"_3.fasta");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            MultipleAlignmentExact3 myExact = new MultipleAlignmentExact3(sequences.get(0), sequences.get(1), sequences.get(2), matrix, gap);
+//            myExact.backTrack(false);
+//            exactScores[i] = Util.computeScoreMulti(myExact.getAlignment(), gap, matrix);
+//
+//            MultipleAlignmentApprox myApprox = new MultipleAlignmentApprox(sequences, matrix, gap, new SimpleExtend());
+////            myApprox.print();
+//            approxScores[i] = Util.computeScoreMulti(myApprox.getAlignment(), gap, matrix);
+//        }
+//
+//        System.out.println("scores of 20 fastas:");
+//
+//        for(int i = 0; i < 20; i++){
+//            System.out.println(exactScores[i] + ", " + approxScores[i]);
+//        }
 
+//            try {
+//                sequences = FASTAParser.Parse("input/testseqs_"+120+"_3.fasta");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            MultipleAlignmentExact3 myExact = new MultipleAlignmentExact3(sequences.get(0), sequences.get(1), sequences.get(2), matrix, gap);
+//            myExact.backTrack(false);
+//            for(String s : myExact.getAlignment()){
+//                System.out.println(s);
+//            }
+//            System.out.println(Util.computeScoreMulti(myExact.getAlignment(), gap, matrix));
+//
+//            MultipleAlignmentApprox myApprox = new MultipleAlignmentApprox(sequences, matrix, gap, new SimpleExtend());
+//        for(String s : myApprox.getAlignment()){
+//            System.out.println(s);
+//        }
+//            System.out.println(Util.computeScoreMulti(myApprox.getAlignment(), gap, matrix));
 
-        for(int i = 0; i < 20; i++){
-            try {
-                sequences = FASTAParser.Parse("input/testseqs_"+(i+1)*10+"_3.fasta");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            MultipleAlignmentExact3 myExact = new MultipleAlignmentExact3(sequences.get(0), sequences.get(1), sequences.get(2), matrix, gap);
-            myExact.backTrack(false);
-            exactScores[i] = Util.computeScoreMulti(myExact.getAlignment(), gap, matrix);
-
-            MultipleAlignmentApprox myApprox = new MultipleAlignmentApprox(sequences, matrix, gap, new SimpleExtend());
-            approxScores[i] = Util.computeScoreMulti(myApprox.getAlignment(), gap, matrix);
-        }
-
-        System.out.println("scores of 20 fastas:");
-
-        for(int i = 0; i < 20; i++){
-            System.out.println(exactScores[i] + ", " + approxScores[i]);
-        }
 
 
     }

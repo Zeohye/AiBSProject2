@@ -5,5 +5,5 @@ import java.util.List;
  */
 public interface ExtendStrategy {
 
-    public List<String> extend(List<String> mult, String s1, String si);
+    public List<String> extend(List<String> mult, SinglePairwiseAlignment[] oldAlignments, int center, int current);
 }
