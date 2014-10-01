@@ -5,7 +5,7 @@ import java.util.Map;
  */
 public class SinglePairWiseAlignmentImpl implements SinglePairwiseAlignment{
 
-    private int[][] scoreMatrix;
+    public int[][] scoreMatrix;
     private int score;
     private String sequence1;
     private String sequence2;
