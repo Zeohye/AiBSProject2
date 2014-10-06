@@ -10,6 +10,10 @@ public class Main {
 
     public static void main(String[] args){
 
+        System.out.println("started");
+
+
+
                 if(args[0].equals("exact")){
                     Map matrix = null;
                     List<String> sequences = null;
@@ -39,11 +43,20 @@ public class Main {
             int gap = 0;
             boolean full = false;
             try {
-                sequences = FASTAParser.Parse("input/" + args[1]);
+//                sequences = FASTAParser.Parse("input/" + args[1]);
+                sequences = FASTAParser.Parse("input/" + "brca1-testseqs.fasta");
+//                sequences.remove(7);
+//                sequences.remove(6);
+//                sequences.remove(5);
+
                 matrix = matrixParser.Parse("input/scoreMatrix.txt");
                 gap = Integer.parseInt(args[2]);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+            System.out.println(sequences.size());
+            for(String s : sequences){
+                System.out.println(s.length());
             }
 
             MultipleAlignmentApprox alignment = new MultipleAlignmentApprox(sequences, matrix, gap, new SimpleExtend());

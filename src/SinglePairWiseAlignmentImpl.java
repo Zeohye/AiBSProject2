@@ -23,6 +23,8 @@ public class SinglePairWiseAlignmentImpl implements SinglePairwiseAlignment{
         backtrack.backTrack(seq1, seq2, scoreMatrix, costMatrix, "", "", false, gapcost);
         sequence1 = backtrack.getSequenses1().get(0);
         sequence2 = backtrack.getSequenses2().get(0);
+
+        scoreMatrix = null;
     }
 
 

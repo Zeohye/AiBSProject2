@@ -10,6 +10,7 @@ public class SimpleExtend implements ExtendStrategy {
     @Override
     public List<String> extend(List<String> mult, SinglePairwiseAlignment[] oldAlignments, int center, int current) {
 
+
         String s1;
         String si;
 
@@ -36,20 +37,33 @@ public class SimpleExtend implements ExtendStrategy {
 
         String pre = mult.get(0);
 
+        System.out.println(s1);
+        System.out.println(si);
+        System.out.println();
 
-        int a=0, b=0;
+        int a = 0, b = 0;
 
         int addedToSi = 0;
-        while(a< pre.length() && b < si.length()){
-            if(pre.charAt(a) == '-' && s1.charAt(b-addedToSi) != '-'){
-                si = si.substring(0, a) + "-" + si.substring(a);
-                addedToSi++;
+        try {
+
+            while (a < pre.length() && b < si.length()) {
+                if (pre.charAt(a) == '-' && s1.charAt(b - addedToSi) != '-') {
+                    si = si.substring(0, a) + "-" + si.substring(a);
+                    addedToSi++;
+                } else if (pre.charAt(a) != '-' && s1.charAt(b - addedToSi) == '-') {
+                    pre = pre.substring(0, a) + "-" + pre.substring(a);
+                }
+                a++;
+                b++;
             }
-            else if (pre.charAt(a) != '-' && s1.charAt(b-addedToSi) == '-'){
-                pre = pre.substring(0, a) + "-" + pre.substring(a);
-            }
-            a++;
-            b++;
+
+        }catch(StringIndexOutOfBoundsException e){
+            System.out.println(a + ", " + b);
+            System.out.println(addedToSi);
+            System.out.println(si.length());
+            System.out.println(s1.length());
+            System.out.println(pre.length());
+            throw e;
         }
 
         if(pre.length() < si.length()){
@@ -63,34 +77,27 @@ public class SimpleExtend implements ExtendStrategy {
             }
         }
 
+        String oldS1 = mult.get(0);
         mult.remove(0);
         mult.add(0, pre);
 
         for(int i = 1; i < mult.size(); i++){
             String sequence = mult.get(i);
-            String oldS1;
-
-            if(i-1 < center){
-                oldS1 = oldAlignments[i-1].getSeq2();
-            }else{
-                oldS1 = oldAlignments[i].getSeq1();
-            }
 
 
             a = 0;
             int inserted = 0;
             while(a < pre.length()&& a-inserted < oldS1.length()){
                 if(pre.charAt(a) == '-'  && oldS1.charAt(a-inserted) != '-' ){
-                    if(sequence.charAt(a) != '-') {
                         sequence = sequence.substring(0, a) + '-' + sequence.substring(a);
-                    }
-                    inserted++;
+                        inserted++;
+//                    }
                 }
                 a++;
             }
             while(sequence.length() < pre.length()) {
 
-                    sequence += "-";
+                sequence += "-";
 
 
 
