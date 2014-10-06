@@ -18,8 +18,12 @@ public class matrixParser {
                 for (int i = 0; i < header.length; i++) {
                         matrix.put(header[i]+header[j],Integer.valueOf(values[i]));
                 }
+
                 j++;
             }
+
+
+
             if(br != null)br.close();
             return matrix;
         }

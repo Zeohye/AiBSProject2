@@ -18,11 +18,23 @@ public class linearAlignment {
         for(int i = 1; i<=seq1.length();i++){
             for(int j = 1; j<=seq2.length();j++){
                 int v1,v2,v3;
-                String value = ""+seq1.charAt(i-1)+seq2.charAt(j-1);
-                v1 = scoreTable[i-1][j-1]+matrix.get(value);
-                v2 = scoreTable[i-1][j]+gapCost;
-                v3 = scoreTable[i][j-1]+gapCost;
-                scoreTable[i][j] = Util.min3(v1, v2, v3);
+                String value = "";
+                try {
+
+                    value = "" + seq1.charAt(i - 1) + seq2.charAt(j - 1);
+                    v1 = scoreTable[i - 1][j - 1] + matrix.get(value);
+                    v2 = scoreTable[i - 1][j] + gapCost;
+                    v3 = scoreTable[i][j - 1] + gapCost;
+                    scoreTable[i][j] = Util.min3(v1, v2, v3);
+                }catch(NullPointerException e){
+
+                    System.out.println("caught!");
+                    System.out.println(i + "; " +j);
+                    System.out.println(matrix);
+                    System.out.println(scoreTable);
+                    System.out.println(value);
+                    throw e;
+                }
             }
         }
         return scoreTable;

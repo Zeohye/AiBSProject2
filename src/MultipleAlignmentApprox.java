@@ -28,7 +28,7 @@ public class MultipleAlignmentApprox implements MultipleAllignment{
             //extend only if i != center
             if(i != center ) {
                 extendStrat.extend(alignment, pairwiseAlignments[center], center, i);
-//                print();
+                print();
             }
 
         }
@@ -44,6 +44,8 @@ public class MultipleAlignmentApprox implements MultipleAllignment{
             for(int j = i+1; j < sequences.size(); j++){
                 seq1 = sequences.get(i);
                 seq2 = sequences.get(j);
+
+                System.out.println(i + ", " + j);
 
                 //align them
                 SinglePairWiseAlignmentImpl pairWiseAlignment = new SinglePairWiseAlignmentImpl(seq1, seq2, costMatrix, gapCost);
