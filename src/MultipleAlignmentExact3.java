@@ -26,6 +26,7 @@ public class MultipleAlignmentExact3 implements MultipleAllignment{
 
         //start with an empty 3-dim score matrix
         score = new int[seq1.length()+1][seq2.length()+1][seq3.length()+1];
+        //set base case
         score[0][0][0] = 0;
 
         // d stands for direction.
@@ -37,14 +38,32 @@ public class MultipleAlignmentExact3 implements MultipleAllignment{
 
         String s;
 
-        for(int i = 0; i <= seq1.length(); i++){
-            for(int j = 0; j <= seq2.length(); j++){
-                for(int k = 0; k <= seq3.length(); k++){
-                    //skip the first step
-                    //not super elegant
-                    if(i == 0 && j  == 0 && k == 0){
-                        continue;
-                    }
+        //set boundry cases. where i,j or k is =0
+        int[][] score2 = new SinglePairWiseAlignmentImpl(seq1,seq2,costMatrix,gapCost).scoreMatrix;
+        for(int i =0; i<=seq1.length();i++){
+            for(int j = 0;j<=seq2.length();j++){
+
+                score[i][j][0]= score2[i][j]+(i+j)*gapCost;
+            }
+        }
+        score2 = new SinglePairWiseAlignmentImpl(seq1,seq3,costMatrix,gapCost).scoreMatrix;
+        for(int i =0; i<=seq1.length();i++){
+            for(int j = 0;j<=seq3.length();j++){
+
+                score[i][0][j]= score2[i][j]+(i+j)*gapCost;
+            }
+        }
+        score2 = new SinglePairWiseAlignmentImpl(seq2,seq3,costMatrix,gapCost).scoreMatrix;
+        for(int i =0; i<=seq3.length();i++){
+            for(int j = 0;j<=seq2.length();j++){
+
+                score[0][i][j]= score2[i][j]+(i+j)*gapCost;
+            }
+        }
+
+        for(int i = 1; i <= seq1.length(); i++){
+            for(int j = 1; j <= seq2.length(); j++){
+                for(int k = 1; k <= seq3.length(); k++){
 
                     //set the scores to maximum
                     //in case they don't get initialized
